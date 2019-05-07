@@ -19,26 +19,26 @@ namespace Microsoft.DataTransfer.DocumentDb.Shared
                 throw Errors.ConnectionStringMissing();
         }
 
-        protected static DocumentDbClient CreateClient(IDocumentDbAdapterConfiguration configuration, IDataTransferContext context, bool isShardedImport, int? maxConnectionLimit)
+        protected static DocumentDbClient CreateClient(IDocumentDbAdapterConfiguration configuration, IDataTransferContext context, bool isShardedImport, int? maxConnectionLimit, bool? ignoreSSLCertErrors = false)
         {
             Guard.NotNull("configuration", configuration);
 
             var connectionSettings = ParseConnectionString(configuration.ConnectionString);
             return new DocumentDbClient(
-                CreateRawClient(connectionSettings, configuration.ConnectionMode, context, isShardedImport, maxConnectionLimit, configuration.Retries, configuration.RetryInterval), 
+                CreateRawClient(connectionSettings, configuration.ConnectionMode, context, isShardedImport, maxConnectionLimit, configuration.Retries, configuration.RetryInterval, ignoreSSLCertErrors), 
                 connectionSettings.Database
             );
         }
 
         private static DocumentClient CreateRawClient(IDocumentDbConnectionSettings connectionSettings, DocumentDbConnectionMode? connectionMode, IDataTransferContext context,
-            bool isShardedImport, int? maxConnectionLimit, int? retries, TimeSpan? retryInterval)
+            bool isShardedImport, int? maxConnectionLimit, int? retries, TimeSpan? retryInterval, bool? ignoreSSLCertErrors = false)
         {
             Guard.NotNull("connectionSettings", connectionSettings);
 
             return new DocumentClient(
                 new Uri(connectionSettings.AccountEndpoint),
-                connectionSettings.AccountKey,
-                CreateConnectionPolicy(connectionMode, context, isShardedImport, maxConnectionLimit, retries, retryInterval)
+                connectionSettings.AccountKey, ignoreSSLCertErrors.GetValueOrDefault() ? DocumentDbClientHelper.GetSSLCertHandler() : null, !ignoreSSLCertErrors.GetValueOrDefault() ?
+                CreateConnectionPolicy(connectionMode, context, isShardedImport, maxConnectionLimit, retries, retryInterval) : null
             );
         }
 

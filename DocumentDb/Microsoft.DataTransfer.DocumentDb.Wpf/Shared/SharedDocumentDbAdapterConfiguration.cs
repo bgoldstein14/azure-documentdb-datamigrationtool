@@ -13,6 +13,8 @@ namespace Microsoft.DataTransfer.DocumentDb.Wpf.Shared
         private int? retries;
         private TimeSpan? retryInterval;
 
+        private bool? ignoreSSLCertErrors;
+
         public string ConnectionString
         {
             get { return connectionString; }
@@ -35,6 +37,12 @@ namespace Microsoft.DataTransfer.DocumentDb.Wpf.Shared
         {
             get { return retryInterval; }
             set { SetProperty(ref retryInterval, value, ValidateRetryInterval); }
+        }
+
+        public bool? IgnoreSSLCertErrors
+        {
+            get { return ignoreSSLCertErrors; }
+            set { SetProperty(ref ignoreSSLCertErrors, value); }
         }
 
         public SharedDocumentDbAdapterConfiguration()

@@ -10,5 +10,6 @@ namespace Microsoft.DataTransfer.DocumentDb.Wpf.Shared
         DocumentDbConnectionMode? ConnectionMode { get; set; }
         int? Retries { get; set; }
         TimeSpan? RetryInterval { get; set; }
+        bool? IgnoreSSLCertErrors { get; set; }
     }
 }

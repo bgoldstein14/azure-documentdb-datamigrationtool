@@ -24,7 +24,14 @@ namespace Microsoft.DataTransfer.DocumentDb.Wpf.Shared
             if (configuration == null)
                 return;
 
-            await probeClient.TestConnection(configuration.ConnectionString, configuration.ConnectionMode);
+            try
+            {
+                await probeClient.TestConnection(configuration.ConnectionString, configuration.ConnectionMode, configuration.IgnoreSSLCertErrors);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
 
             MessageBox.Show(
                 Resources.TestConnectionSuccessMessage,

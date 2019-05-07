@@ -31,5 +31,11 @@ namespace Microsoft.DataTransfer.DocumentDb.Shared
         /// </summary>
         [Display(ResourceType = typeof(DynamicConfigurationResources), Description = "RetryInterval")]
         TimeSpan? RetryInterval { get; }
+
+        /// <summary>
+        /// Determines if SSL certificate errors should be ignored.
+        /// </summary>
+        [Display(ResourceType = typeof(DynamicConfigurationResources), Description = "IgnoreSSLCertErrors")]
+        bool? IgnoreSSLCertErrors { get; }
     }
 }

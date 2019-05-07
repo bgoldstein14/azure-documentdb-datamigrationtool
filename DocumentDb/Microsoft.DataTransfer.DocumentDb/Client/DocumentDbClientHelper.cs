@@ -1,4 +1,7 @@
-﻿using Microsoft.Azure.Documents.Client;
+﻿using System.Net.Http;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.Azure.Documents.Client;
 using Microsoft.DataTransfer.Basics;
 using Microsoft.DataTransfer.DocumentDb.Shared;
 
@@ -20,5 +23,19 @@ namespace Microsoft.DataTransfer.DocumentDb.Client
 
             return connectionPolicy;
         }
+
+        public static HttpClientHandler GetSSLCertHandler()
+        {
+            HttpClientHandler httpClientHandler = new HttpClientHandler();
+            httpClientHandler.ClientCertificateOptions = ClientCertificateOption.Manual;
+            httpClientHandler.ServerCertificateCustomValidationCallback += CertificateCallBack;
+            return httpClientHandler;
+        }
+
+        public static bool CertificateCallBack(HttpRequestMessage a, X509Certificate2 b, X509Chain c, SslPolicyErrors d)
+        {
+            return true;
+        }
+
     }
 }

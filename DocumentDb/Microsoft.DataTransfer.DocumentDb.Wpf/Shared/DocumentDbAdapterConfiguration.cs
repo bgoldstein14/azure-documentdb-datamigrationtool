@@ -3,6 +3,7 @@ using Microsoft.DataTransfer.Basics.Extensions;
 using Microsoft.DataTransfer.DocumentDb.Shared;
 using Microsoft.DataTransfer.WpfHost.Extensibility.Basics;
 using System;
+using System.Configuration;
 
 namespace Microsoft.DataTransfer.DocumentDb.Wpf.Shared
 {
@@ -20,6 +21,9 @@ namespace Microsoft.DataTransfer.DocumentDb.Wpf.Shared
 
         public static readonly string RetryIntervalPropertyName =
             ObjectExtensions.MemberName<IDocumentDbAdapterConfiguration>(c => c.RetryInterval);
+
+        public static readonly string IgnoreSSLCertErrorsPropertyName =
+            ObjectExtensions.MemberName<IDocumentDbAdapterConfiguration>(c => c.IgnoreSSLCertErrors);
 
         public string ConnectionString
         {
@@ -43,6 +47,16 @@ namespace Microsoft.DataTransfer.DocumentDb.Wpf.Shared
         {
             get { return SharedConfiguration.RetryInterval; }
             set { SharedConfiguration.RetryInterval = value; }
+        }
+
+        public bool? IgnoreSSLCertErrors
+        {
+            get
+            {
+                return bool.Parse(ConfigurationManager.AppSettings["IgnoreSSLCertErrors"] ?? "false");
+                //return SharedConfiguration.IgnoreSSLCertErrors;
+            }
+            set { SharedConfiguration.IgnoreSSLCertErrors = value; }
         }
 
         public DocumentDbAdapterConfiguration(TShared sharedConfiguration)
