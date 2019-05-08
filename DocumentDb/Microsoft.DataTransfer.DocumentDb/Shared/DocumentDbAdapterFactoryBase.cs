@@ -19,13 +19,13 @@ namespace Microsoft.DataTransfer.DocumentDb.Shared
                 throw Errors.ConnectionStringMissing();
         }
 
-        protected static DocumentDbClient CreateClient(IDocumentDbAdapterConfiguration configuration, IDataTransferContext context, bool isShardedImport, int? maxConnectionLimit, bool? ignoreSSLCertErrors = false)
+        protected static DocumentDbClient CreateClient(IDocumentDbAdapterConfiguration configuration, IDataTransferContext context, bool isShardedImport, int? maxConnectionLimit)
         {
             Guard.NotNull("configuration", configuration);
 
             var connectionSettings = ParseConnectionString(configuration.ConnectionString);
             return new DocumentDbClient(
-                CreateRawClient(connectionSettings, configuration.ConnectionMode, context, isShardedImport, maxConnectionLimit, configuration.Retries, configuration.RetryInterval, ignoreSSLCertErrors), 
+                CreateRawClient(connectionSettings, configuration.ConnectionMode, context, isShardedImport, maxConnectionLimit, configuration.Retries, configuration.RetryInterval, configuration.IgnoreSSLCertErrors), 
                 connectionSettings.Database
             );
         }
